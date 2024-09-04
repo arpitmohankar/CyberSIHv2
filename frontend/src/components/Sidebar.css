@@ -1,0 +1,33 @@
+.sidebar-header {
+    background: linear-gradient(145deg, #2C2C3E, #1E1E2F);
+    box-shadow: 5px 5px 10px #191924, -5px -5px 10px #2E2E42;
+  }
+  
+  .sidebar-title {
+    font-family: 'Poppins', sans-serif;
+    color: #F0F0F3;
+  }
+  
+  .sidebar-divider {
+    background-color: #4A4A5E;
+  }
+  
+  .sidebar-list .sidebar-item {
+    transition: all 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .sidebar-list .sidebar-item:hover {
+    background: linear-gradient(145deg, #1E1E2F, #2C2C3E);
+    box-shadow: inset 5px 5px 10px #191924, inset -5px -5px 10px #2E2E42;
+    transform: scale(1.05);
+  }
+  
+  .sidebar-icon {
+    color: #F0F0F3;
+  }
+  
+  .sidebar-subitem {
+    padding-left: 30px !important;
+  }
+  

@@ -1,0 +1,54 @@
+/* Target only the container of the Laws component */
+.laws-container {
+    margin-left: 32px;
+    padding: 24px;
+    background-color: #1E1E2F; /* Dark background */
+    color: #FFFFFF; /* White text */
+    box-sizing: border-box;
+    min-height: 100vh; /* Ensure it fills the screen height */
+}
+
+.laws-container h4 {
+    color: #FFFFFF;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    margin-bottom: 24px;
+}
+
+.laws-container h5 {
+    color: #FFD700; /* Gold color for headings */
+    font-weight: 600;
+    border-bottom: 2px solid #FFD700;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+}
+
+.laws-paper {
+    padding: 24px;
+    margin-bottom: 32px;
+    background-color: #2B2B3B; /* Darker paper color for contrast */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.laws-paper:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.laws-typography {
+    margin-bottom: 16px;
+    line-height: 1.6;
+}
+
+.laws-link {
+    color: #1E90FF; /* Bright blue for links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.laws-link:hover {
+    color: #00BFFF; /* Lighter blue on hover */
+    text-decoration: underline;
+}

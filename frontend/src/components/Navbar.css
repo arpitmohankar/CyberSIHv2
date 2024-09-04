@@ -1,0 +1,70 @@
+/* Navbar.css */
+
+.navbar {
+    background: #2C2C3E;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding: 10px;
+  }
+  
+  .navbar .MuiToolbar-root {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+  }
+  
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: #3A3A4F;
+    border-radius: 20px;
+    box-shadow: inset 2px 2px 5px #1E1E2F, inset -2px -2px 5px #2E2E42;
+    padding: 5px 10px;
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .search-box:hover {
+    box-shadow: inset 4px 4px 8px #1A1A2B, inset -4px -4px 8px #33334A;
+  }
+  
+  .search-box .MuiInputBase-root {
+    color: #FFF;
+  }
+  
+  .search-box .MuiSvgIcon-root {
+    color: #FFF;
+    margin-right: 5px;
+  }
+  
+  .navbar-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    color: #FFF;
+    
+  }
+  
+  .navbar-icons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .navbar-icons .MuiIconButton-root {
+    color: #FFF;
+    margin-left: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+  }
+  
+  .navbar-icons .MuiIconButton-root:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.5);
+    
+  }
+  
+  .navbar-datetime {
+    color: #A3A3B3;
+    font-size: 0.9rem;
+    margin-right: 20px;
+    bottom: 100%;
+  }
+  
