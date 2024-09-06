@@ -160,18 +160,23 @@ const IncidentList = () => {
           Categories
         </Typography>
         <List>
-          {[
-            { name: 'Fraud', icon: <Warning /> },
-            { name: 'Scam', icon: <Warning /> },
-            { name: 'Server', icon: <Security /> },
-            { name: 'Money', icon: <Money /> },
-            { name: 'Hacked', icon: <Security /> },
-            { name: 'Laundering', icon: <Money /> },
-            { name: 'Sextortion', icon: <Warning /> },
-            { name: 'Threats', icon: <Warning /> },
-            { name: 'Database', icon: <Security /> },
-            { name: 'Data Breach', icon: <Security /> },
-          ].map((category) => (
+        {[
+  { name: 'Fraud', icon: <Warning /> },
+  { name: 'Scam', icon: <Warning /> },
+  { name: 'Server', icon: <Security /> },
+  { name: 'Money', icon: <Money /> },
+  { name: 'Hacked', icon: <Security /> },
+  { name: 'Laundering', icon: <Money /> },
+  { name: 'Sextortion', icon: <Warning /> },
+  { name: 'Threats', icon: <Warning /> },
+  { name: 'Database', icon: <Security /> },
+  { name: 'Data Breach', icon: <Security /> },
+  { name: 'Scrapping', icon: <Security /> },   // Added
+  { name: 'DDoS', icon: <Warning /> },         // Added
+  { name: 'Steal', icon: <Security /> },       // Added
+  { name: 'Phishing', icon: <Security /> }     // Added
+]
+.map((category) => (
             <ListItemButton
               key={category.name}
               onClick={() => handleCategoryClick(category.name.toLowerCase())}

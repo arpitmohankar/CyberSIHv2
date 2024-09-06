@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, CircularProgress } from '@mui/material';
 import Sidebar from './Sidebar.js';
 import Navbar from './Navbar.js';
 import { Pie } from 'react-chartjs-2';
 import axios from 'axios';
 import IndiaMap from './IndiaMap'; // Ensure this path is correct
 import { INDIAN_STATES } from '../utils/constants.js'; // Adjust path as needed
+import PersonIcon from '@mui/icons-material/Person'; // Icon for user count
 
 // Chart.js imports
 import {
@@ -20,6 +21,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Layout = ({ children }) => {
   // Pie Chart State
   const [incidents, setIncidents] = useState([]);
+  const [userCount, setUserCount] = useState(null); // State for user count
 
   useEffect(() => {
     const fetchIncidents = async () => {
@@ -32,6 +34,26 @@ const Layout = ({ children }) => {
     };
 
     fetchIncidents();
+  }, []);
+
+
+
+  //ignore that segment of the code maine ye kara qki syd container 1 real time data dikhe but its not working and delete ni kr raha
+  // qki bahut errors aa rhe hai hatane par isko baad me dekhenge backend par
+  
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/user-count');
+        setUserCount(response.data.count);
+      } catch (error) {
+        console.error('Error fetching user count:', error);
+      }
+    };
+
+    fetchUserCount();
+    const interval = setInterval(fetchUserCount, 5000); // Fetch every 5 seconds
+    return () => clearInterval(interval); // Cleanup on unmount
   }, []);
 
   const getCategoryCounts = () => {
@@ -138,10 +160,18 @@ const Layout = ({ children }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              flexDirection: 'column'
             }}>
-              <Typography variant="h6" sx={{ color: '#FF6584' }}>
-                Container 1
-              </Typography>
+              {userCount === null ? (
+                <CircularProgress sx={{ color: '#FF6584' }} /> // Loading spinner
+              ) : (
+                <>
+                  <PersonIcon sx={{ fontSize: '50px', color: '#FF6584', marginBottom: '10px' }} />
+                  <Typography variant="h6" sx={{ color: '#FF6584' }}>
+                    {userCount} Users Visited
+                  </Typography>
+                </>
+              )}
             </Box>
             <Box sx={{
               backgroundColor: '#12151C',
@@ -160,24 +190,23 @@ const Layout = ({ children }) => {
             </Box>
           </Box>
 
-          {/* Replaced Pie Chart */}
+          {/* Pie Chart */}
           <Box sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem',
-            marginTop: '1rem',
-            backgroundColor: '#12151C',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#C8CDD4',
             borderRadius: '12px',
-            padding: '0',
-            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
+            padding: '1.5rem',
             width: '450px',  // Adjusted container width for Pie chart
             height: '360px',  // Adjusted container height for Pie chart
-            position: 'relative', // Positioning for top-left alignment
+            // position: 'relative', Positioning for top-left alignment
           }}>
-            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', marginBottom: '1rem', color: '#C8CDD4' }}>
+            <Typography variant="h6" gutterBottom sx={{  marginTop: '-45rem', color: '#C8CDD4', marginLeft: '10rem'}}>
               Incident Categories Overview
             </Typography>
-            <Box sx={{ position: 'top-right', top: 0, left: 0, width: '350px', height: '300px' }}> {/* Top-left aligned Pie chart */}
+            <Box sx={{ flexGrow: -1 }}>
               <Pie data={chartData} />
             </Box>
           </Box>
