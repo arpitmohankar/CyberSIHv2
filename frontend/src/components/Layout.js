@@ -1,59 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress } from '@mui/material';
-import Sidebar from './Sidebar.js';
-import Navbar from './Navbar.js';
-import { Pie } from 'react-chartjs-2';
-import axios from 'axios';
-import IndiaMap from './IndiaMap'; // Ensure this path is correct
-import { INDIAN_STATES } from '../utils/constants.js'; // Adjust path as needed
-import PersonIcon from '@mui/icons-material/Person'; // Icon for user count
-
-// Chart.js imports
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-} from 'chart.js';
+import React, { useState, useEffect } from "react";
+import { Box, Typography, CircularProgress } from "@mui/material";
+import Sidebar from "./Sidebar.js";
+import Navbar from "./Navbar.js";
+import { Pie } from "react-chartjs-2";
+import axios from "axios";
+import IndiaMap from "./IndiaMap";
+import { INDIAN_STATES } from "../utils/constants.js";
+import PersonIcon from "@mui/icons-material/Person";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Layout = ({ children }) => {
-  // Pie Chart State
   const [incidents, setIncidents] = useState([]);
-  const [userCount, setUserCount] = useState(null); // State for user count
+  const [userCount, setUserCount] = useState(null);
 
   useEffect(() => {
     const fetchIncidents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/scrape');
+        const response = await axios.get("http://localhost:5000/scrape");
         setIncidents(response.data.data);
       } catch (err) {
-        console.error('An error occurred while fetching incidents');
+        console.error("An error occurred while fetching incidents");
       }
     };
 
     fetchIncidents();
   }, []);
 
-
-
-  //ignore that segment of the code maine ye kara qki syd container 1 real time data dikhe but its not working and delete ni kr raha
-  // qki bahut errors aa rhe hai hatane par isko baad me dekhenge backend par
-  
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/user-count');
+        const response = await axios.get("http://localhost:5000/user-count");
         setUserCount(response.data.count);
       } catch (error) {
-        console.error('Error fetching user count:', error);
+        console.error("Error fetching user count:", error);
       }
     };
 
     fetchUserCount();
-    const interval = setInterval(fetchUserCount, 5000); // Fetch every 5 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
+    const interval = setInterval(fetchUserCount, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const getCategoryCounts = () => {
@@ -65,186 +52,151 @@ const Layout = ({ children }) => {
   };
 
   const lightColors = [
-    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0',
-    '#9966FF', '#FF9F40', '#66FF66', '#FF6666',
-    '#66B2FF', '#FFB266', '#B266FF', '#66FFB2',
-    '#FF66B2', '#B2FF66'
+    "#FF6384",
+    "#36A2EB",
+    "#FFCE56",
+    "#4BC0C0",
+    "#9966FF",
+    "#FF9F40",
   ];
 
   const chartData = {
     labels: Object.keys(getCategoryCounts()),
     datasets: [
       {
-        label: 'Incident Categories',
+        label: "Incident Categories",
         data: Object.values(getCategoryCounts()),
         backgroundColor: lightColors,
-        borderColor: '#ffffff',
+        borderColor: "#ffffff",
         borderWidth: 2,
         hoverOffset: 10,
       },
     ],
   };
 
-  // India Map State
-  const [incidentsByState, setIncidentsByState] = useState({});
-  const [popupContent, setPopupContent] = useState(null);
-  const [popupVisible, setPopupVisible] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/incidents-by-state');
-        setIncidentsByState(response.data.data);
-      } catch (error) {
-        console.error('Error fetching incidents by state:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const handleStateClick = (stateName) => {
-    const stateCode = Object.keys(INDIAN_STATES).find(key => INDIAN_STATES[key] === stateName);
-    if (stateCode && incidentsByState[stateCode]) {
-      const stateIncidents = incidentsByState[stateCode];
-      if (stateIncidents.length > 0) {
-        setPopupContent(
-          <div style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '300px',
-            padding: '20px',
-            backgroundColor: 'white',
-            boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
-            zIndex: 1000
-          }}>
-            <h3>Incident Details for {stateName}</h3>
-            {stateIncidents.map((incident, index) => (
-              <div key={index}>
-                <p><strong>Source:</strong> <a href={incident.source} target="_blank" rel="noopener noreferrer">{incident.source}</a></p>
-                <p><strong>Description:</strong> {incident.text}</p>
-                <p><strong>Category:</strong> {incident.category}</p>
-                {incident.image !== 'No image available' && (
-                  <img src={incident.image} alt="Incident" style={{ width: '100%', borderRadius: '8px' }} />
-                )}
-                <hr />
-              </div>
-            ))}
-            <button onClick={() => setPopupVisible(false)} style={{ marginTop: '10px' }}>Close</button>
-          </div>
-        );
-        setPopupVisible(true);
-      }
-    }
-  };
-
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: "flex", height: "100vh" }}>
       <Sidebar />
-      <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#1A1A1D' }}>
+      <Box
+        sx={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "#1A1A1D",
+        }}
+      >
         <Navbar />
-        <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#2C2C3E', borderRadius: 4, boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)' }}>
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            backgroundColor: "#2C2C3E",
+            borderRadius: 4,
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+          }}
+        >
           {children}
 
-          {/* New Containers */}
-          <Box sx={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-            <Box sx={{
-              backgroundColor: '#12151C',
-              borderRadius: '12px',
-              padding: '1.5rem',
-              boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
-              width: '300px',  // Adjusted container width
-              height: '250px',  // Adjusted container height
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'column'
-            }}>
+          <Box sx={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+            <Box
+              sx={{
+                backgroundColor: "#12151C",
+                borderRadius: "12px",
+                padding: "1.5rem",
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                width: "350px",
+                height: "300px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
               {userCount === null ? (
-                <CircularProgress sx={{ color: '#FF6584' }} /> // Loading spinner
+                <CircularProgress sx={{ color: "#FF6584" }} />
               ) : (
                 <>
-                  <PersonIcon sx={{ fontSize: '50px', color: '#FF6584', marginBottom: '10px' }} />
-                  <Typography variant="h6" sx={{ color: '#FF6584' }}>
+                  <PersonIcon
+                    sx={{
+                      fontSize: "50px",
+                      color: "#FF6584",
+                      marginBottom: "10px",
+                    }}
+                  />
+                  <Typography variant="h6" sx={{ color: "#FF6584" }}>
                     {userCount} Users Visited
                   </Typography>
                 </>
               )}
             </Box>
-            <Box sx={{
-              backgroundColor: '#12151C',
-              borderRadius: '12px',
-              padding: '1.5rem',
-              boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
-              width: '300px',  // Adjusted container width
-              height: '250px',  // Adjusted container height
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Typography variant="h6" sx={{ color: '#FF6584' }}>
+
+            <Box
+              sx={{
+                backgroundColor: "#12151C",
+                borderRadius: "12px",
+                padding: "1.5rem",
+                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+                width: "350px",
+                height: "300px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Typography variant="h6" sx={{ color: "#FF6584" }}>
                 Container 2
               </Typography>
             </Box>
-          </Box>
 
-          {/* Pie Chart */}
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#C8CDD4',
-            borderRadius: '12px',
-            padding: '1.5rem',
-            width: '450px',  // Adjusted container width for Pie chart
-            height: '360px',  // Adjusted container height for Pie chart
-            // position: 'relative', Positioning for top-left alignment
-          }}>
-            <Typography variant="h6" gutterBottom sx={{  marginTop: '-45rem', color: '#C8CDD4', marginLeft: '10rem'}}>
-              Incident Categories Overview
-            </Typography>
-            <Box sx={{ flexGrow: -1 }}>
-              <Pie data={chartData} />
+            <Box
+              sx={{
+                backgroundColor: "none",
+                padding: "1.5rem",
+                width: "350px",
+                height: "300px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{ color: "#C8CDD4", marginBottom: "1rem" }}
+              >
+                Incident Categories Overview
+              </Typography>
+              <Box sx={{ width: "300px", height: "250px" }}>
+                <Pie data={chartData} style={{ width: "100%", height: "100%" }} />
+              </Box>
             </Box>
           </Box>
 
-          {/* India Map */}
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem',
-            marginTop: '1rem',
-            backgroundColor: '#12151C',
-            borderRadius: '12px',
-            padding: '1.5rem',
-            boxShadow: '0px 4px 15px rgba(0, 0, 0, 0.2)',
-          }}>
-            <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', marginBottom: '1rem', color: '#C8CDD4' }}>
+          {/* India Map Container */}
+          <Box
+            sx={{
+              backgroundColor: "#12151C",
+              borderRadius: "12px",
+              padding: "1.5rem",
+              boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
+              marginTop: "2rem",
+            }}
+          >
+            <Typography
+              variant="h5"
+              gutterBottom
+              sx={{
+                textAlign: "center",
+                marginBottom: "1rem",
+                color: "#C8CDD4",
+              }}
+            >
               Cybersecurity Incidents in India
             </Typography>
-            <IndiaMap onStateClick={handleStateClick} />
+            <IndiaMap />
           </Box>
-
-          {/* Popup for India Map */}
-          {popupVisible && (
-            <div style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 999
-            }}>
-              {popupContent}
-            </div>
-          )}
         </Box>
       </Box>
     </Box>
