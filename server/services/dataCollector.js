@@ -20,6 +20,7 @@ classifier.addDocument('scrapping', 'scrapping');
 classifier.addDocument('ddos', 'ddos');
 classifier.addDocument('steal', 'steal');
 classifier.addDocument('phishing', 'phishing');
+
 classifier.train();
 
 // Function to scrape a website

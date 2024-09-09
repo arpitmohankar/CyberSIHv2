@@ -1,1 +1,19 @@
-sfasf sudhr jaa bsdk  skhdfisdgiyg dferf gaudihasoidhausgdhasbdsaygfwydgwudhuwogdiqwgd
+{/* Pie Chart */}
+<Box sx={{
+  display: 'flex',
+  flexDirection: 'column', // Stack title and chart vertically
+  alignItems: 'center', // Center horizontally
+  justifyContent: 'center', // Center vertically
+  backgroundColor: 'transparent',
+  borderRadius: '12px',
+  padding: '1.5rem',
+  width: '450px',  // Adjusted container width for Pie chart
+  height: '360px',  // Adjusted container height for Pie chart
+}}>
+  <Typography variant="h6" gutterBottom sx={{ color: '#C8CDD4', marginBottom: '1rem' }}>
+    Incident Categories Overview
+  </Typography>
+  <Box sx={{ flexGrow: 1 }}>
+    <Pie data={chartData} />
+  </Box>
+</Box>
