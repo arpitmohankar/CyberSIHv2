@@ -44,7 +44,7 @@ const IncidentList = () => {
   useEffect(() => {
     const fetchIncidents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/scrape');
+        const response = await axios.get('https://cybersihv2.onrender.com/scrape');
         setIncidents(response.data.data);
         setLoading(false);
       } catch (err) {

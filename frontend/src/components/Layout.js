@@ -18,7 +18,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const fetchIncidents = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/scrape");
+        const response = await axios.get("https://cybersihv2.onrender.com/scrape");
         setIncidents(response.data.data);
       } catch (err) {
         console.error("An error occurred while fetching incidents");
@@ -31,7 +31,7 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/user-count");
+        const response = await axios.get("https://cybersihv2.onrender.com/user-count");
         setUserCount(response.data.count);
       } catch (error) {
         console.error("Error fetching user count:", error);
@@ -76,13 +76,26 @@ const Layout = ({ children }) => {
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
-      <Sidebar />
+      {/* Sidebar on the left */}
       <Box
         sx={{
+          width: "20%",
+          height: "100%",
+          position: "fixed",
+        }}
+      >
+        <Sidebar />
+      </Box>
+
+      {/* Dashboard Area */}
+      <Box
+        sx={{
+          marginLeft: "20%",
           flexGrow: 1,
           display: "flex",
           flexDirection: "column",
           backgroundColor: "#1A1A1D",
+          padding: "2rem", // Adjust padding for consistency
         }}
       >
         <Navbar />
@@ -90,108 +103,53 @@ const Layout = ({ children }) => {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
+            padding: "1.5rem",
             backgroundColor: "#2C2C3E",
-            borderRadius: 4,
-            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.2)",
+            borderRadius: "8px",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gap: "1.5rem",
           }}
         >
           {children}
 
-          <Box sx={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
-            <Box
-              sx={{
-                backgroundColor: "#12151C",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
-                width: "350px",
-                height: "300px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              {userCount === null ? (
-                <CircularProgress sx={{ color: "#FF6584" }} />
-              ) : (
-                <>
-                  <PersonIcon
-                    sx={{
-                      fontSize: "50px",
-                      color: "#FF6584",
-                      marginBottom: "10px",
-                    }}
-                  />
-                  <Typography variant="h6" sx={{ color: "#FF6584" }}>
-                    {userCount} Users Visited
-                  </Typography>
-                </>
-              )}
-            </Box>
+          {/* User Count */}
+          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {userCount === null ? (
+              <CircularProgress sx={{ color: "#FF6584" }} />
+            ) : (
+              <>
+                <PersonIcon
+                  sx={{
+                    fontSize: "50px",
+                    color: "#FF6584",
+                    marginBottom: "10px",
+                  }}
+                />
+                <Typography variant="h6" sx={{ color: "#FF6584" }}>
+                  {userCount} Users Visited
+                </Typography>
+              </>
+            )}
+          </Box>
 
-            <Box
-              sx={{
-                backgroundColor: "#12151C",
-                borderRadius: "12px",
-                padding: "1.5rem",
-                boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
-                width: "350px",
-                height: "300px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              <Typography variant="h6" sx={{ color: "#FF6584" }}>
-                Container 2
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                backgroundColor: "none",
-                padding: "1.5rem",
-                width: "350px",
-                height: "300px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{ color: "#C8CDD4", marginBottom: "1rem" }}
-              >
-                Incident Categories Overview
-              </Typography>
-              <Box sx={{ width: "300px", height: "250px" }}>
-                <Pie data={chartData} style={{ width: "100%", height: "100%" }} />
-              </Box>
+          {/* Incident Categories Pie Chart */}
+          <Box sx={{ textAlign: "center" }}>
+            <Typography variant="h6" sx={{ color: "#C8CDD4", marginBottom: "1rem" }}>
+              Incident Categories Overview
+            </Typography>
+            <Box sx={{ width: "300px", height: "250px" }}>
+              <Pie data={chartData} style={{ width: "100%", height: "100%" }} />
             </Box>
           </Box>
 
-          {/* India Map Container */}
-          <Box
-            sx={{
-              backgroundColor: "#12151C",
-              borderRadius: "12px",
-              padding: "1.5rem",
-              boxShadow: "0px 4px 15px rgba(0, 0, 0, 0.2)",
-              marginTop: "2rem",
-            }}
-          >
+          {/* India Map */}
+          <Box>
             <Typography
               variant="h5"
               gutterBottom
-              sx={{
-                textAlign: "center",
-                marginBottom: "1rem",
-                color: "#C8CDD4",
-              }}
+              sx={{ textAlign: "center", color: "#C8CDD4" }}
             >
               Cybersecurity Incidents in India
             </Typography>

@@ -43,7 +43,7 @@ const Visualization = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/incidents-by-state'); // Fetch data by state
+        const response = await axios.get('https://cybersihv2.onrender.com/incidents-by-state'); // Fetch data by state
         setIncidentsByState(response.data.data); // Set categorized incidents by state
       } catch (error) {
         console.error('Error fetching incidents by state:', error);

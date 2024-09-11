@@ -29,7 +29,7 @@ const Articles = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/scrape');
+        const response = await axios.get('https://cybersihv2.onrender.com/scrape');
         if (response.data && Array.isArray(response.data.data)) {
           setArticles(response.data.data);
         } else {
